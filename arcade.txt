@@ -9,10 +9,9 @@ tir vers la ou le joueur regarde
 
 
 Calcul du Score
-Score=((PV restants%+(Temps maximal d'optention de points - Temps de survie)×5)×(Handicap))×10
-Handicap = 1+(Différence totale des stats/100)
-Différence totale des stats = atk% + spd% + rspd%+ fr% + hp% + pspd%
-Temps maximal => 10min soit 600 seconds
+Score=((PV restants%+(|(degat mis×4) - degat subis|)×5)×(Handicap))×10
+Handicap= 1+(Différence totale des stats/100)
+Différence totale des stats = (-atk% - spd% - rspd%- fr% - hp% - pspd%)/5
 les changements de stats peuvent aller de -25% a +25% soit un multiplicateur maximal de 150% et minimal de 50%
 
 exemple de différence de stats:
@@ -34,21 +33,23 @@ multiplicateur de 50%
 soit 50 point <=> 250% de stats de différences
 soit  1 point <=> 5% de stats de différences
 
-score maximal théorique :
+score maximal théorique si aucun soin n'est pris:
 PV restants% = 100
-Temps maximal = 600
-Temps de survie = 0
+degat mis = 163
+degat subis = 0
 Différence totale des stats = 50
 
-Score=((100+(600-0)×5)×(1+(50/100)))×10 = 46500
+Score=((100%+(|(163×4) - 0|)×5)×(1+(50/100)))×10=50400
+Handicap= 1+(50/100)
 
-score minimal théorique :
+score minimal théorique si aucun soin n'est pris :
 PV restants% = 1
-Temps maximal = 0
-Temps de survie = 0
+degat mis = 60
+degat subis = 162
 Différence totale des stats = -50
 
-Score=((1+(0-0)×5)×(1+(-50/100)))×10 = 5
+Score=((1%+(|(60×4) - 162|)×5)×(1+(-50/100)))×10=1930
+Handicap= 1+(-50/100)
 
 
 
@@ -89,26 +90,27 @@ la partie dure 155 seconds
 Le gagnant a 35% de c'est pv a la fin de la partie
 
 calcul:
-Score=((PV restants%+(Temps maximal - Temps de survie)×5)×(Handicap))×10
+Score=((PV restants%+(|(degat mis×4) - degat subis|)×5)×(Handicap))×10
+Handicap= 1+(Différence totale des stats/100)
 PV restants% = 35
-Temps maximal = 300
-Temps de survie = 155
+degat mis = 120
+degat subis = 65
 Handicap= 1+(Différence totale des stats/100)
 
 si le joueur 1 gagne:
 
 Différence totale des stats = -8
 
-donc ScoreJoueur1 = ((35+(600-155)×5)×(1+(-8/100)))×10 = 20,792
-donc si le joueur 1 gagne, il a un score de 20,792
+donc ScoreJoueur1 = ((35+(480-65)×5)×(1+(-8/100)))×10 = 19,412
+donc si le joueur 1 gagne, il a un score de 19,412
 
 
 si le joueur 2 gagne:
 
 Différence totale des stats = -8
 
-donc ScoreJoueur2 = ((35+(600-155)×5)×(1+(8/100)))×10 = 24,408
-donc si le joueur 2 gagne, il a un score de 24,408
+donc ScoreJoueur2 = ((35+(480-65)×5)×(1+(8/100)))×10 = 22,788
+donc si le joueur 2 gagne, il a un score de 22,788
 
 
 table dans la base de donnée:
