@@ -1,0 +1,191 @@
+.dll -> 3 -> pouvoir / -> perso / -> score / -> option / -> map
+un symbole de couleur différentes pour différecier les joueurs
+clavier pour prendre les pseudos
+chaque pouvoir a soit une durée soit un nombre d'utilistion
+tir vers la ou le joueur regarde
+
+
+[↑](#Table-of-Contents)
+
+
+Calcul du Score
+Score=((PV restants%+(Temps maximal d'optention de points - Temps de survie)×5)×(Handicap))×10
+Handicap = 1+(Différence totale des stats/100)
+Différence totale des stats = atk% + spd% + rspd%+ fr% + hp% + pspd%
+Temps maximal => 10min soit 600 seconds
+les changements de stats peuvent aller de -25% a +25% soit un multiplicateur maximal de 150% et minimal de 50%
+
+exemple de différence de stats:
+maximal:
+  atk  -50% -> + 10 %
+  spd  -50% -> + 10 %
+  rspd -50% -> + 10 %
+  fr   -50% -> + 10 %
+  hp   -50% -> + 10 %
+multiplicateur de 150%
+minimal:
+  atk  +50% -> - 10 %
+  spd  +50% -> - 10 %
+  rspd +50% -> - 10 %
+  fr   +50% -> - 10 %
+  hp   +50% -> - 10 %
+multiplicateur de 50% 
+
+soit 50 point <=> 250% de stats de différences
+soit  1 point <=> 5% de stats de différences
+
+score maximal théorique :
+PV restants% = 100
+Temps maximal = 600
+Temps de survie = 0
+Différence totale des stats = 50
+
+Score=((100+(600-0)×5)×(1+(50/100)))×10 = 46500
+
+score minimal théorique :
+PV restants% = 1
+Temps maximal = 0
+Temps de survie = 0
+Différence totale des stats = -50
+
+Score=((1+(0-0)×5)×(1+(-50/100)))×10 = 5
+
+
+
+exemple:
+
+partie entre 2 joueurs :
+|joueur 1          ||joueur 2                   |
+|------------------||---------------------------|
+| tank |   stats   || fire rate dps |   stats   |
+|------|-----------||---------------|-----------|
+|  hp  |    130    ||  hp           |    100    |
+| atk  |     10    || atk           |      8    |
+| spd  |     80    || spd           |    100    |
+| rspd |    100    || rspd          |    100    |
+|  fr  |    0.6    ||  fr           |    1.4    |
+
+changement des stats de chaque joueur :
+|joueur 1          ||joueur 2                   |
+|------------------||---------------------------|
+| tank |   stats   || fire rate dps |   stats   |
+|------|-----------||---------------|-----------|
+|  hp  |   -25%    ||  hp           |    +0%    |
+| atk  |   +10%    || atk           |    +5%    |
+| spd  |   +10%    || spd           |   -10%    |
+| rspd |    +0%    || rspd          |   -10%    |
+|  fr  |   +20%    ||  fr           |   -10%    |
+|  tot |   +15%    || tot           |   -25%    |
+
+calcul de multiplicateur de différence de stats
+joueur 1:
+-(15-(-25))/5= -8 points
+Différence totale des stats = -8
+joueur 2:
+-(-25-15)/5= 8 points
+Différence totale des stats = 8
+
+la partie dure 155 seconds
+Le gagnant a 35% de c'est pv a la fin de la partie
+
+calcul:
+Score=((PV restants%+(Temps maximal - Temps de survie)×5)×(Handicap))×10
+PV restants% = 35
+Temps maximal = 300
+Temps de survie = 155
+Handicap= 1+(Différence totale des stats/100)
+
+si le joueur 1 gagne:
+
+Différence totale des stats = -8
+
+donc ScoreJoueur1 = ((35+(600-155)×5)×(1+(-8/100)))×10 = 20,792
+donc si le joueur 1 gagne, il a un score de 20,792
+
+
+si le joueur 2 gagne:
+
+Différence totale des stats = -8
+
+donc ScoreJoueur2 = ((35+(600-155)×5)×(1+(8/100)))×10 = 24,408
+donc si le joueur 2 gagne, il a un score de 24,408
+
+
+table dans la base de donnée:
+
+score
+perso avec leur changements
+table pour enregistrer les joueur et leurs stats modifié
+
+
+CREATE TABLE changement (
+  uuid UUID PRIMARY KEY,  /////// id INTEGER PRIMARY KEY,
+  Cuuid UUID FOREIGN KEY,  ////// Cid INTEGER FOREIGN KEY,
+  pseudo TEXT,
+  rspd INTEGER,
+  spd INTEGER,
+  hp INTEGER,
+  atk INTEGER,
+  fr INTEGER,
+  pspd INTEGER
+);
+
+CREATE TABLE character (
+  uuid UUID PRIMARY KEY,  /////// id INTEGER PRIMARY KEY,
+  class TEXT,
+  rspd INTEGER,
+  spd INTEGER,
+  hp INTEGER,
+  atk INTEGER,
+  fr FLOAT
+);
+
+CREATE TABLE score {
+  uuid UUID PRIMARY KEY,  /////// id INTEGER PRIMARY KEY,
+  pseudo TEXT,
+  number INTEGER
+}
+
+ou peut etre que l'on va mettre des id normal a la place vu que c'est un jeu vidéo 
+et que pas grave si les id des perso + changement sont pas sécurisé comme pour une base de donné de site web
+
+base de donné legère vu qu'elle sera en local donc dans le style sqlite. pas besoin d'une place énorme
+
+
+
+
+### Defense Weapons 🛡️
+**Bulwark Shield** → A massive shield that blocks 30% of incoming damage and can reflect projectiles.(duration of use: ? | number of uses: ?)   
+**Guardian Mace** → Heavy weapon that reduces damage taken by 15% while held.(duration of use: ? | number of uses: ?)   
+**Fortress Blade** → A sword that grants a temporary shield absorbing 10% of max HP after every successful block.(duration of use: ? | number of uses: ?)   
+**Aegis Spear** → When thrown, creates a defensive barrier that reduces incoming damage by 20% for 5 seconds.(duration of use: ? | number of uses: ?)   
+**Titan Hammer** → Slamming the ground creates a shockwave that knocks enemies back and grants temporary armor.(duration of use: ? | number of uses: ?)  
+## Speed Items ⚡
+**Wind Boots** → Increases movement speed by 30% for ? seconds. (duration of use: ? | number of uses: ?)  
+**Phantom Cloak** → Grants a brief burst of transparency and a 50% speed boost for ? seconds. (duration of use: ? | number of uses: ?)  
+**Sonic Talisman** → Boosts movement speed by 70%, but disables attacking for ? seconds. (duration of use: ? | number of uses: ?)  
+**Blink Pendant** → Allows instant teleportation up to 5 meters away. (duration of use: ? | number of uses: ?)  
+**Storm Gauntlets** → Increases movement speed and attack speed by 20% for ? seconds. (duration of use: ? | number of uses: ?)  
+## Attack Items ⚔️
+**Doomblade** → Increases attack power by 30% for ? seconds. (duration of use: ? | number of uses: ?)  
+**Executioner’s Charm** → Attacks apply Bleeding. (duration of use: ? | number of uses: ?)  
+**Rage Pendant** → Increases attack power by 20% but reduces defense by 10% for ? seconds. (duration of use: ? | number of uses: ?)  
+**Warrior’s Seal** → Heavy attacks deal bonus damage equal to 5% of the enemy’s missing HP. (duration of use: ? | number of uses: ?)  
+## Fire Rate Items 🔫
+**Rapidfire Gloves** → Increases attack speed by 50% for ? seconds. (duration of use: ? | number of uses: ?)  
+**Machina Core** → Doubles attack speed but reduces accuracy by 10% for ? seconds. (duration of use: ? | number of uses: ?)  
+**Havoc Trigger** → Each hit increases fire rate by 5% for ? seconds (stacks up to ? times). (duration of use: ? | number of uses: ?)  
+**Stormfang Relic** → Allows shooting two projectiles per attack for ? seconds. (duration of use: ? | number of uses: ?)  
+**Turbo Modulator** → Boosts ranged fire rate by 40% but increases reload time by 15% for ? seconds. (duration of use: ? | number of uses: ?)  
+### Healing Weapons ❤️   
+**Lifebinder Staff** → Successful attacks restore 2% of max HP (Cooldown: ? seconds).(duration of use: ? | number of uses: ?)   
+**Blessed Hammer** → Healing aura activates when attacking, restoring 1% HP per second to allies nearby.(duration of use: ? | number of uses: ?)   
+**Vitality Sword** → Killing an enemy heals the wielder for 5% of their max HP.(duration of use: ? | number of uses: ?)   
+**Seraph’s Bow** → Arrows restore HP equal to 10% of the damage dealt.(duration of use: ? | number of uses: ?)   
+**Phoenix Gauntlet** → When HP drops below 20%, the next attack heals for 30% HP (once per life).(duration of use: ? | number of uses: ?)   
+### Buff Weapons ✨  
+**Champion’s Lance** → Grants a +10% attack and defense boost for 5 seconds after a successful hit.(duration of use: ? | number of uses: ?)   
+**Divine Staff** → Casts an aura that increases all allies' movement speed by 15% for ? seconds.(duration of use: ? | number of uses: ?)   
+**Battle Cry Sword** → Striking an enemy increases the wielder’s attack and movement speed by 10% for ? seconds.(duration of use: ? | number of uses: ?)   
+**Energy Infused Gauntlet** → Increases the wielder’s fire rate and attack power by 20% while attacking.(duration of use: ? | number of uses: ?)   
+**Hero’s Greatsword** → Randomly grants a buff on each hit: Attack +20%, Speed +30%, or Defense +25% for ? seconds.(duration of use: ? | number of uses: ?)   
