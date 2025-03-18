@@ -1,0 +1,86 @@
+
+using System;
+using System.Collections.Generic;
+using System.Data;
+using UnityEngine;
+using Mono.Data.Sqlite;
+
+public class ScoreManager : MonoBehaviour
+{
+    private string connectionString = "URI=file:" + Application.persistentDataPath + "/GameScores.db"; // SQLite database path
+
+    private void CreateDatabase()
+    {
+        if (!System.IO.File.Exists(Application.persistentDataPath + "/GameScores.db"))
+        {
+            using (var connection = new SqliteConnection(connectionString))
+            {
+                connection.Open();
+                string query = "CREATE TABLE IF NOT EXISTS score (uuid TEXT PRIMARY KEY, pseudo TEXT, number INTEGER)";
+                using (var command = new SqliteCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+                connection.Close();
+            }
+        }
+    }
+
+    // Use prepared statements to insert the score
+    public void SaveScore(string uuid, string pseudo, int score)
+    {
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+            string query = "INSERT INTO score (uuid, pseudo, number) VALUES (@uuid, @pseudo, @score)";
+            
+            using (var command = new SqliteCommand(query, connection))
+            {
+                // Use parameterized queries (prepared statements)
+                command.Parameters.AddWithValue("@uuid", uuid);
+                command.Parameters.AddWithValue("@pseudo", pseudo);
+                command.Parameters.AddWithValue("@score", score);
+                
+                command.ExecuteNonQuery();
+            }
+            connection.Close();
+        }
+    }
+
+    // Use prepared statements to get the top N scores
+    public List<(string pseudo, int score)> GetTopScores(int topN)
+    {
+        List<(string, int)> topScores = new List<(string, int)>();
+
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            connection.Open();
+            string query = "SELECT pseudo, number FROM score ORDER BY number DESC LIMIT @topN";
+
+            using (var command = new SqliteCommand(query, connection))
+            {
+                // Use parameterized queries (prepared statements)
+                command.Parameters.AddWithValue("@topN", topN);
+                
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        topScores.Add((reader.GetString(0), reader.GetInt32(1)));
+                    }
+                }
+            }
+            connection.Close();
+        }
+
+        return topScores;
+    }
+
+    // Method to calculate score (no changes needed here)
+    public static int CalculateScore(float hpRemaining, int damageDealt, int damageReceived, float statDifference)
+    {
+        float handicap = 1 + (statDifference / 100);
+        float score = ((hpRemaining + (Mathf.Abs((damageDealt * 4) - damageReceived) * 5)) * handicap) * 10;
+        return Mathf.RoundToInt(score);
+    }
+}
