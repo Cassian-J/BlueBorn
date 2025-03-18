@@ -1,21 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class PlayerControls
-{
-    public KeyCode moveUp;
-    public KeyCode moveDown;
-    public KeyCode moveLeft;
-    public KeyCode moveRight;
-    public KeyCode fireNormal;
-    public KeyCode fireSpecial;
-}
 
 public class Player : MonoBehaviour
 {
     [Header("Player Settings")]
     public int playerID = 1; // 1 ou 2 pour différencier les joueurs
 
+    public Animator animator;
     [Header("Stats")]
     public float health = 100;
     public float attack = 10;
@@ -26,7 +19,6 @@ public class Player : MonoBehaviour
 
     [Header("Controls")]
     public PlayerControls controls;
-
     private float nextFireTime = 0f;
     public GameObject projectilePrefab;
     public Transform firePoint;
@@ -95,11 +87,27 @@ public class Player : MonoBehaviour
     private void HandleMovement()
     {
         Vector3 moveDirection = Vector3.zero;
+        Vector2 move = Vector2.zero;
 
-        if (Input.GetKey(controls.moveUp)) moveDirection += Vector3.up;
-        if (Input.GetKey(controls.moveDown)) moveDirection += Vector3.down;
-        if (Input.GetKey(controls.moveLeft)) moveDirection += Vector3.left;
-        if (Input.GetKey(controls.moveRight)) moveDirection += Vector3.right;
+        if (Input.GetKey(controls.moveUp)){
+            moveDirection += Vector3.up;
+            move.x = 1;
+        };
+        if (Input.GetKey(controls.moveDown)){
+            moveDirection += Vector3.down;
+            move.x = -1;
+        };
+        if (Input.GetKey(controls.moveLeft)){
+            moveDirection += Vector3.left;
+            move.y = -1;
+        };
+        if (Input.GetKey(controls.moveRight)) {
+            moveDirection += Vector3.right;
+            move.y = 1;
+        };
+        animator.SetFloat("Horizontal", move.y);
+        animator.SetFloat("Vertical", move.x);
+        animator.SetFloat("Speed", move.magnitude);
 
         transform.Translate(moveDirection.normalized * speed * Time.deltaTime);
     }
@@ -128,4 +136,15 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Special attack triggered!");
     }
+}
+
+[System.Serializable]
+public class PlayerControls
+{
+    public KeyCode moveUp;
+    public KeyCode moveDown;
+    public KeyCode moveLeft;
+    public KeyCode moveRight;
+    public KeyCode fireNormal;
+    public KeyCode fireSpecial;
 }
