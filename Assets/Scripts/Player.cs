@@ -12,9 +12,9 @@ public class Player : MonoBehaviour
     [Header("Stats")]
     public float health = 100;
     public float attack = 10;
-    public float speed = 5;
+    public float speed = 1;
     public float rotationSpeed = 100;
-    public float fireRate = 1;
+    public float fireRate = 5;
     public float projectileSpeed = 10;
     [SerializeField]
     private GameObject _bulletPrefab;
@@ -111,10 +111,10 @@ public class Player : MonoBehaviour
     animator.SetFloat("Vertical", move.x);
     animator.SetFloat("Speed", move.magnitude);
 
-    if (Input.GetKey(controls.fireNormal) && Time.time >= nextFireTime)
+    if (Input.GetKey(controls.fireNormal) && Time.time >= nextFireTime && moveDirection != Vector3.zero)
     {
         animator.SetBool("isShooting", true);
-        Shoot();
+        Shoot(moveDirection);
         
         nextFireTime = Time.time + 1f / fireRate;
     }
@@ -135,19 +135,18 @@ public class Player : MonoBehaviour
     transform.Translate(moveDirection.normalized * speed * Time.deltaTime);
 }
 
-    private void Shoot()
+    private void Shoot(Vector3 vector)
     {
         Debug.Log("player " + playerID + " Attack triggered!");
         GameObject bullet = Instantiate(_bulletPrefab, firePoint.position, transform.rotation);
-        Bullet bulletScript = bullet.GetComponent<Bullet>(); 
+        Bullet bulletScript = bullet.GetComponent<Bullet>();
         if (bulletScript != null)
         {
             bulletScript.playerID = playerID;  
+            bulletScript.speed = speed*2;
+            bulletScript.move = vector;
         }
-        float speed = 1;
-        Debug.Log(speed);
-        Debug.Log(firePoint.up);
-        bullet.transform.Translate(firePoint.up * speed * Time.deltaTime);
+        
     }
 
 

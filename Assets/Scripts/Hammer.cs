@@ -5,7 +5,7 @@ using UnityEngine;
 public class Hammer : MonoBehaviour
 {
     public float damage = 20f;
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
