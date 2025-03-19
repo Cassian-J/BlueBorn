@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public int playerID = 1; // 1 ou 2 pour différencier les joueurs
 
     public Animator animator;
+    public GameObject hammerPrefab;
     [Header("Stats")]
     public float health = 100;
     public float attack = 10;
@@ -30,8 +31,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        HandleMovement();
-        HandleShooting();
+        HandleAction();
     }
 
     public void LoadControls()
@@ -59,8 +59,8 @@ public class Player : MonoBehaviour
             controls.moveDown = KeyCode.DownArrow;
             controls.moveLeft = KeyCode.LeftArrow;
             controls.moveRight = KeyCode.RightArrow;
-            controls.fireNormal = KeyCode.Alpha1;
-            controls.fireSpecial = KeyCode.Alpha2;
+            controls.fireNormal = KeyCode.Keypad1;
+            controls.fireSpecial = KeyCode.Keypad2;
         }
         else if (playerID == 2)
         {
@@ -69,7 +69,7 @@ public class Player : MonoBehaviour
             controls.moveLeft = KeyCode.A;
             controls.moveRight = KeyCode.D;
             controls.fireNormal = KeyCode.E;
-            controls.fireSpecial = KeyCode.A;
+            controls.fireSpecial = KeyCode.Q;
         }
     }
 
@@ -84,57 +84,90 @@ public class Player : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    private void HandleMovement()
+    private void HandleAction()
+{
+    Vector3 moveDirection = Vector3.zero;
+    Vector2 move = Vector2.zero;
+
+    if (Input.GetKey(controls.moveUp)){
+        moveDirection += Vector3.up;
+        move.x = 1;
+    };
+    if (Input.GetKey(controls.moveDown)){
+        moveDirection += Vector3.down;
+        move.x = -1;
+    };
+    if (Input.GetKey(controls.moveLeft)){
+        moveDirection += Vector3.left;
+        move.y = -1;
+    };
+    if (Input.GetKey(controls.moveRight)) {
+        moveDirection += Vector3.right;
+        move.y = 1;
+    };
+
+    animator.SetFloat("Horizontal", move.y);
+    animator.SetFloat("Vertical", move.x);
+    animator.SetFloat("Speed", move.magnitude);
+
+    if (Input.GetKey(controls.fireNormal) && Time.time >= nextFireTime)
     {
-        Vector3 moveDirection = Vector3.zero;
-        Vector2 move = Vector2.zero;
-
-        if (Input.GetKey(controls.moveUp)){
-            moveDirection += Vector3.up;
-            move.x = 1;
-        };
-        if (Input.GetKey(controls.moveDown)){
-            moveDirection += Vector3.down;
-            move.x = -1;
-        };
-        if (Input.GetKey(controls.moveLeft)){
-            moveDirection += Vector3.left;
-            move.y = -1;
-        };
-        if (Input.GetKey(controls.moveRight)) {
-            moveDirection += Vector3.right;
-            move.y = 1;
-        };
-        animator.SetFloat("Horizontal", move.y);
-        animator.SetFloat("Vertical", move.x);
-        animator.SetFloat("Speed", move.magnitude);
-
-        transform.Translate(moveDirection.normalized * speed * Time.deltaTime);
+        Shoot();
+        animator.SetBool("isShooting", true);
+        nextFireTime = Time.time + 1f / fireRate;
+    }
+    else if (Input.GetKeyUp(controls.fireNormal))
+    {
+        animator.SetBool("isShooting", false);
     }
 
-    private void HandleShooting()
+    if (Input.GetKeyDown(controls.fireSpecial))
     {
-        if (Input.GetKeyDown(controls.fireNormal) && Time.time >= nextFireTime)
-        {
-            Shoot();
-            nextFireTime = Time.time + 1f / fireRate;
-        }
-        else if (Input.GetKeyDown(controls.fireSpecial))
-        {
-            SpecialAttack();
-        }
+        MeleeAttack();
+        animator.SetBool("isAttacking", true);
+    }else if (Input.GetKeyUp(controls.fireSpecial))
+    {
+        animator.SetBool("isAttacking", false);
     }
+
+    transform.Translate(moveDirection.normalized * speed * Time.deltaTime);
+}
 
     private void Shoot()
-    {
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-        rb.linearVelocity = firePoint.up * projectileSpeed;
-    }
+{
+    Debug.Log("player "+playerID +" Attack triggered!");
 
-    private void SpecialAttack()
+    /*GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+    Bullet bulletScript = projectile.GetComponent<Bullet>();
+    
+    if (bulletScript != null)
     {
-        Debug.Log("Special attack triggered!");
+        bulletScript.Initialize(firePoint.up, transform);
+    }*/
+}
+
+    private void MeleeAttack()
+    {
+        Debug.Log("player "+playerID +" Special attack triggered!");
+        if (hammerPrefab != null && firePoint != null)
+    {
+        Instantiate(hammerPrefab, firePoint.position, firePoint.rotation);
+    }
+    }
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        Debug.Log("player "+playerID +" took " + damage + " damage! Remaining health: " + health);
+
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+    private void Die()
+    {
+        Debug.Log("player "+playerID +" died!");
+        Destroy(gameObject);
     }
 }
 
@@ -148,3 +181,5 @@ public class PlayerControls
     public KeyCode fireNormal;
     public KeyCode fireSpecial;
 }
+
+
