@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     public int playerID = 1; // 1 ou 2 pour différencier les joueurs
 
     public Animator animator;
-    public GameObject hammerPrefab;
     [Header("Stats")]
     public float health = 100;
     public float attack = 10;
@@ -17,11 +16,13 @@ public class Player : MonoBehaviour
     public float rotationSpeed = 100;
     public float fireRate = 1;
     public float projectileSpeed = 10;
-
+    [SerializeField]
+    private GameObject _bulletPrefab;
+    [SerializeField]
+    private float _bulletSpeed;
     [Header("Controls")]
     public PlayerControls controls;
     private float nextFireTime = 0f;
-    public GameObject projectilePrefab;
     public Transform firePoint;
 
     private void Start()
@@ -112,8 +113,9 @@ public class Player : MonoBehaviour
 
     if (Input.GetKey(controls.fireNormal) && Time.time >= nextFireTime)
     {
-        Shoot();
         animator.SetBool("isShooting", true);
+        Shoot();
+        
         nextFireTime = Time.time + 1f / fireRate;
     }
     else if (Input.GetKeyUp(controls.fireNormal))
@@ -134,25 +136,24 @@ public class Player : MonoBehaviour
 }
 
     private void Shoot()
-{
-    Debug.Log("player "+playerID +" Attack triggered!");
-
-    /*GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-    Bullet bulletScript = projectile.GetComponent<Bullet>();
-    
-    if (bulletScript != null)
     {
-        bulletScript.Initialize(firePoint.up, transform);
-    }*/
-}
+        Debug.Log("player " + playerID + " Attack triggered!");
+        GameObject bullet = Instantiate(_bulletPrefab, firePoint.position, transform.rotation);
+        Bullet bulletScript = bullet.GetComponent<Bullet>(); 
+        if (bulletScript != null)
+        {
+            bulletScript.playerID = playerID;  
+        }
+        float speed = 1;
+        Debug.Log(speed);
+        Debug.Log(firePoint.up);
+        bullet.transform.Translate(firePoint.up * speed * Time.deltaTime);
+    }
+
 
     private void MeleeAttack()
     {
         Debug.Log("player "+playerID +" Special attack triggered!");
-        if (hammerPrefab != null && firePoint != null)
-    {
-        Instantiate(hammerPrefab, firePoint.position, firePoint.rotation);
-    }
     }
     public void TakeDamage(float damage)
     {
