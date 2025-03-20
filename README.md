@@ -16,7 +16,7 @@
 - projectile speed (pspd)
 - 
 
-#personnage
+# personnage
 **normal stats**
 | normal |   stats   |
 |--------|-----------|
