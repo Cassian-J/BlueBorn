@@ -92,7 +92,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 11
         inSlope: 1.25
         outSlope: 0
         tangentMode: 69
@@ -113,7 +113,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 10
         inSlope: -1.25
         outSlope: 0
         tangentMode: 69
@@ -218,7 +218,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 10
         inSlope: 0
         outSlope: 5
         tangentMode: 69
@@ -246,7 +246,8 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -3164809056393425246, guid: 33a61de7852d48859ccbfac1de56f9dd, type: 3}
+      value: {fileID: -3164809056393425246, guid: 33a61de7852d48859ccbfac1de56f9dd,
+        type: 3}
     attribute: m_Sprite
     path: gun
     classID: 212
@@ -255,7 +256,8 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -3164809056393425246, guid: a13a8e4484ef4b95ab569d9b24a02db5, type: 3}
+      value: {fileID: -3164809056393425246, guid: a13a8e4484ef4b95ab569d9b24a02db5,
+        type: 3}
     attribute: m_Sprite
     path: gun/shoot
     classID: 212
@@ -509,7 +511,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 11
         inSlope: 1.25
         outSlope: 0
         tangentMode: 69
@@ -530,7 +532,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 10
         inSlope: -1.25
         outSlope: 0
         tangentMode: 69
@@ -761,7 +763,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0
+        value: 10
         inSlope: 0
         outSlope: 5
         tangentMode: 69

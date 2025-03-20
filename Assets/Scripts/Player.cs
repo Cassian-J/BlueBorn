@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     
     [Header("Controls")]
     public PlayerControls controls;
-    private float nextFireTime = 1f;
+    public float nextFireTime = 1f;
     public Transform firePoint;
     
 
@@ -149,7 +149,7 @@ public class Player : MonoBehaviour
     transform.Translate(moveDirection.normalized * speed * Time.deltaTime);
 }
 
-    private void Shoot(Vector3 vector)
+    public void Shoot(Vector3 vector)
     {   
         animator.SetBool("isShooting", true);
         Debug.Log("player " + playerID + " Attack triggered!");
@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
         
     }
 
-    private void MeleeAttack()
+    public void MeleeAttack()
     {
         animator.SetBool("isAttacking", true);
         Debug.Log("player "+playerID +" Special attack triggered!");
@@ -186,6 +186,11 @@ public class Player : MonoBehaviour
     {
         Debug.Log("player "+playerID +" died!");
         Destroy(gameObject);
+    }
+    public void SetJoystickInput(Vector3 moveDirection)
+    {
+        transform.Translate(moveDirection.normalized * speed * Time.deltaTime);
+
     }
 }
 
