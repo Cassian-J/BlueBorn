@@ -191,3 +191,138 @@ base de donné legère vu qu'elle sera en local donc dans le style sqlite. pas b
 **Battle Cry Sword** → Striking an enemy increases the wielder’s attack and movement speed by 10% for ? seconds.(duration of use: ? | number of uses: ?)   
 **Energy Infused Gauntlet** → Increases the wielder’s fire rate and attack power by 20% while attacking.(duration of use: ? | number of uses: ?)   
 **Hero’s Greatsword** → Randomly grants a buff on each hit: Attack +20%, Speed +30%, or Defense +25% for ? seconds.(duration of use: ? | number of uses: ?)   
+
+
+
+
+
+
+
+
+
+
+
+using UnityEngine;
+using System.Collections;
+using System.IO.Ports;  // Si vous avez besoin de gérer des périphériques série, par exemple un joystick série
+
+public class InputManager : MonoBehaviour
+{
+    // Joystick Inputs (déjà gérés par Unity)
+    private float player1JoystickHorizontal;
+    private float player1JoystickVertical;
+    private float player2JoystickHorizontal;
+    private float player2JoystickVertical;
+
+    // Définir les GPIO pins pour les boutons
+    private int player1ButtonUp = 17;    // Exemple GPIO pin pour le bouton 1 (haut)
+    private int player1ButtonDown = 18;  // Exemple GPIO pin pour le bouton 2 (bas)
+    private int player2ButtonUp = 27;    // Exemple GPIO pin pour le bouton 3 (haut)
+    private int player2ButtonDown = 22;  // Exemple GPIO pin pour le bouton 4 (bas)
+
+    // Variables pour lire les états des boutons
+    private bool player1ButtonUpPressed = false;
+    private bool player1ButtonDownPressed = false;
+    private bool player2ButtonUpPressed = false;
+    private bool player2ButtonDownPressed = false;
+
+    // Init
+    void Start()
+    {
+        // Initialisation des GPIO pins pour les boutons
+        InitializeGPIO();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Récupération des données des joysticks (Unity gère déjà les joysticks USB automatiquement)
+        player1JoystickHorizontal = Input.GetAxis("Horizontal_P1");
+        player1JoystickVertical = Input.GetAxis("Vertical_P1");
+
+        player2JoystickHorizontal = Input.GetAxis("Horizontal_P2");
+        player2JoystickVertical = Input.GetAxis("Vertical_P2");
+
+        // Récupération des états des boutons via les GPIO
+        ReadButtonStates();
+
+        // Détecter les actions des boutons et réagir
+        HandleButtonPresses();
+    }
+
+    // Initialisation des GPIO pins pour les boutons
+    void InitializeGPIO()
+    {
+        // Initialiser les GPIO pins pour les boutons en mode Input
+        GPIOSetup(player1ButtonUp);
+        GPIOSetup(player1ButtonDown);
+        GPIOSetup(player2ButtonUp);
+        GPIOSetup(player2ButtonDown);
+    }
+
+    // Configurer un GPIO pin en entrée avec pull-up
+    void GPIOSetup(int pin)
+    {
+        string command = "gpio -g mode " + pin + " in";
+        System.Diagnostics.Process.Start("/bin/bash", "-c \"" + command + "\"");
+        command = "gpio -g mode " + pin + " up";  // Assurer un pull-up
+        System.Diagnostics.Process.Start("/bin/bash", "-c \"" + command + "\"");
+    }
+
+    // Lire l'état des boutons via les GPIO
+    void ReadButtonStates()
+    {
+        player1ButtonUpPressed = ReadButtonState(player1ButtonUp);
+        player1ButtonDownPressed = ReadButtonState(player1ButtonDown);
+        player2ButtonUpPressed = ReadButtonState(player2ButtonUp);
+        player2ButtonDownPressed = ReadButtonState(player2ButtonDown);
+    }
+
+    // Lire l'état d'un bouton spécifique (vérifie si le bouton est pressé ou non)
+    bool ReadButtonState(int pin)
+    {
+        string command = "gpio -g read " + pin;
+        System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo()
+        {
+            FileName = "/bin/bash",
+            Arguments = "-c \"" + command + "\"",
+            RedirectStandardOutput = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
+        };
+        System.Diagnostics.Process process = new System.Diagnostics.Process();
+        process.StartInfo = psi;
+        process.Start();
+        string output = process.StandardOutput.ReadLine();
+        process.WaitForExit();
+        return output == "0";  // Si 0, le bouton est pressé, si 1, non pressé
+    }
+
+    // Gérer les pressions des boutons
+    void HandleButtonPresses()
+    {
+        if (player1ButtonUpPressed)
+        {
+            Debug.Log("Player 1 Button Up Pressed");
+            // Ajouter votre logique ici
+        }
+
+        if (player1ButtonDownPressed)
+        {
+            Debug.Log("Player 1 Button Down Pressed");
+            // Ajouter votre logique ici
+        }
+
+        if (player2ButtonUpPressed)
+        {
+            Debug.Log("Player 2 Button Up Pressed");
+            // Ajouter votre logique ici
+        }
+
+        if (player2ButtonDownPressed)
+        {
+            Debug.Log("Player 2 Button Down Pressed");
+            // Ajouter votre logique ici
+        }
+    }
+}

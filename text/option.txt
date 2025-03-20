@@ -1,0 +1,163 @@
+
+
+
+using UnityEngine;
+using UnityEngine.UI;
+using System.Data;
+using Mono.Data.Sqlite;  // Nécessaire pour SQLite
+
+public class OptionsMenu : MonoBehaviour
+{
+    public MenuManager menuManager;
+
+    // Champs InputField pour les contrôles des joueurs
+    public InputField player1MoveUp, player1MoveDown, player1MoveLeft, player1MoveRight, player1FireNormal, player1FireSpecial;
+    public InputField player2MoveUp, player2MoveDown, player2MoveLeft, player2MoveRight, player2FireNormal, player2FireSpecial;
+
+    private string player1Uuid = "player1_uuid"; // Remplacer par un UUID unique pour le joueur 1
+    private string player2Uuid = "player2_uuid"; // Remplacer par un UUID unique pour le joueur 2
+
+    private void Start()
+    {
+        LoadControls();
+    }
+
+    // Sauvegarde les contrôles dans PlayerPrefs et dans la base de données
+    public void SaveControls()
+    {
+        // Sauvegarde dans PlayerPrefs
+        PlayerPrefs.SetString("Player1_MoveUp", player1MoveUp.text);
+        PlayerPrefs.SetString("Player1_MoveDown", player1MoveDown.text);
+        PlayerPrefs.SetString("Player1_MoveLeft", player1MoveLeft.text);
+        PlayerPrefs.SetString("Player1_MoveRight", player1MoveRight.text);
+        PlayerPrefs.SetString("Player1_FireNormal", player1FireNormal.text);
+        PlayerPrefs.SetString("Player1_FireSpecial", player1FireSpecial.text);
+
+        PlayerPrefs.SetString("Player2_MoveUp", player2MoveUp.text);
+        PlayerPrefs.SetString("Player2_MoveDown", player2MoveDown.text);
+        PlayerPrefs.SetString("Player2_MoveLeft", player2MoveLeft.text);
+        PlayerPrefs.SetString("Player2_MoveRight", player2MoveRight.text);
+        PlayerPrefs.SetString("Player2_FireNormal", player2FireNormal.text);
+        PlayerPrefs.SetString("Player2_FireSpecial", player2FireSpecial.text);
+
+        PlayerPrefs.Save();
+
+        // Sauvegarde dans la base de données temporairement
+        SaveControlsToDatabase();
+    }
+
+    // Sauvegarde les contrôles dans la base de données SQLite temporairement
+    private void SaveControlsToDatabase()
+    {
+        // Récupère les valeurs des InputFields pour Player 1
+        string p1MoveUp = player1MoveUp.text;
+        string p1MoveDown = player1MoveDown.text;
+        string p1MoveLeft = player1MoveLeft.text;
+        string p1MoveRight = player1MoveRight.text;
+        string p1FireNormal = player1FireNormal.text;
+        string p1FireSpecial = player1FireSpecial.text;
+
+        // Récupère les valeurs des InputFields pour Player 2
+        string p2MoveUp = player2MoveUp.text;
+        string p2MoveDown = player2MoveDown.text;
+        string p2MoveLeft = player2MoveLeft.text;
+        string p2MoveRight = player2MoveRight.text;
+        string p2FireNormal = player2FireNormal.text;
+        string p2FireSpecial = player2FireSpecial.text;
+
+        string query = "INSERT OR REPLACE INTO changement (uuid, Cuuid, pseudo, rspd, spd, hp, atk, fr, pspd) VALUES " +
+                       "(@uuid, @Cuuid, @pseudo, @rspd, @spd, @hp, @atk, @fr, @pspd)";
+
+        using (var connection = new SqliteConnection("URI=file:" + Application.persistentDataPath + "/game.db"))
+        {
+            connection.Open();
+            using (var command = new SqliteCommand(query, connection))
+            {
+                // Enregistrement des contrôles pour Player 1
+                command.Parameters.AddWithValue("@uuid", System.Guid.NewGuid().ToString()); // Nouveau UUID temporaire
+                command.Parameters.AddWithValue("@Cuuid", player1Uuid); // UUID du joueur 1
+                command.Parameters.AddWithValue("@pseudo", "Player1"); // Nom du joueur 1
+                command.Parameters.AddWithValue("@rspd", p1MoveUp); // Utilisation de MoveUp comme exemple pour la vitesse de rotation
+                command.Parameters.AddWithValue("@spd", p1MoveDown); // Utilisation de MoveDown comme exemple pour la vitesse de déplacement
+                command.Parameters.AddWithValue("@hp", p1MoveLeft); // Exemple pour les points de vie
+                command.Parameters.AddWithValue("@atk", p1FireNormal); // Exemple pour la puissance de tir
+                command.Parameters.AddWithValue("@fr", p1FireSpecial); // Exemple pour le délai de tir
+                command.Parameters.AddWithValue("@pspd", p1MoveRight); // Exemple pour la vitesse des projectiles
+
+                command.ExecuteNonQuery();
+            }
+        }
+
+        using (var connection = new SqliteConnection("URI=file:" + Application.persistentDataPath + "/game.db"))
+        {
+            connection.Open();
+            using (var command = new SqliteCommand(query, connection))
+            {
+                // Enregistrement des contrôles pour Player 2
+                command.Parameters.AddWithValue("@uuid", System.Guid.NewGuid().ToString()); // Nouveau UUID temporaire
+                command.Parameters.AddWithValue("@Cuuid", player2Uuid); // UUID du joueur 2
+                command.Parameters.AddWithValue("@pseudo", "Player2"); // Nom du joueur 2
+                command.Parameters.AddWithValue("@rspd", p2MoveUp); // Utilisation de MoveUp comme exemple pour la vitesse de rotation
+                command.Parameters.AddWithValue("@spd", p2MoveDown); // Utilisation de MoveDown comme exemple pour la vitesse de déplacement
+                command.Parameters.AddWithValue("@hp", p2MoveLeft); // Exemple pour les points de vie
+                command.Parameters.AddWithValue("@atk", p2FireNormal); // Exemple pour la puissance de tir
+                command.Parameters.AddWithValue("@fr", p2FireSpecial); // Exemple pour le délai de tir
+                command.Parameters.AddWithValue("@pspd", p2MoveRight); // Exemple pour la vitesse des projectiles
+
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    // Charge les contrôles depuis PlayerPrefs et la base de données
+    private void LoadControls()
+    {
+        // Charger depuis PlayerPrefs
+        player1MoveUp.text = PlayerPrefs.GetString("Player1_MoveUp", "UpArrow");
+        player1MoveDown.text = PlayerPrefs.GetString("Player1_MoveDown", "DownArrow");
+        player1MoveLeft.text = PlayerPrefs.GetString("Player1_MoveLeft", "LeftArrow");
+        player1MoveRight.text = PlayerPrefs.GetString("Player1_MoveRight", "RightArrow");
+        player1FireNormal.text = PlayerPrefs.GetString("Player1_FireNormal", "1");
+        player1FireSpecial.text = PlayerPrefs.GetString("Player1_FireSpecial", "2");
+
+        player2MoveUp.text = PlayerPrefs.GetString("Player2_MoveUp", "Z");
+        player2MoveDown.text = PlayerPrefs.GetString("Player2_MoveDown", "S");
+        player2MoveLeft.text = PlayerPrefs.GetString("Player2_MoveLeft", "Q");
+        player2MoveRight.text = PlayerPrefs.GetString("Player2_MoveRight", "D");
+        player2FireNormal.text = PlayerPrefs.GetString("Player2_FireNormal", "E");
+        player2FireSpecial.text = PlayerPrefs.GetString("Player2_FireSpecial", "A");
+    }
+
+    // Supprime les modifications temporaires dans la base de données
+    private void DeleteTemporaryChanges()
+    {
+        string deleteQuery = "DELETE FROM changement WHERE Cuuid = @Cuuid";
+
+        using (var connection = new SqliteConnection("URI=file:" + Application.persistentDataPath + "/game.db"))
+        {
+            connection.Open();
+            using (var command = new SqliteCommand(deleteQuery, connection))
+            {
+                command.Parameters.AddWithValue("@Cuuid", player1Uuid); // UUID du joueur 1
+                command.ExecuteNonQuery();
+            }
+        }
+
+        using (var connection = new SqliteConnection("URI=file:" + Application.persistentDataPath + "/game.db"))
+        {
+            connection.Open();
+            using (var command = new SqliteCommand(deleteQuery, connection))
+            {
+                command.Parameters.AddWithValue("@Cuuid", player2Uuid); // UUID du joueur 2
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    // Retour au menu principal
+    public void ReturnToMenu()
+    {
+        DeleteTemporaryChanges(); // Supprimer les modifications avant de quitter
+        menuManager.LoadScene("MainMenu");
+    }
+}

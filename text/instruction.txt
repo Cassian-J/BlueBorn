@@ -1,0 +1,11 @@
+public class InstructionsScreen : MonoBehaviour
+{
+    public MenuManager menuManager;
+
+    public void ReturnToMenu()
+    {
+        menuManager.LoadScene("MainMenu");
+    }
+}
+
+

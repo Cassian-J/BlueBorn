@@ -1,0 +1,22 @@
+
+using UnityEngine;
+using UnityEngine.UI;
+
+public class EndGameScreen : MonoBehaviour
+{
+    public MenuManager menuManager;
+    public Text winnerText;
+    public ScoreManager scoreManager;
+
+    public void ShowWinner(string winner, float hpRemaining, int damageDealt, int damageReceived, float statDifference)
+    {
+        int score = ScoreManager.CalculateScore(hpRemaining, damageDealt, damageReceived, statDifference);
+        scoreManager.SaveScore(System.Guid.NewGuid().ToString(), winner, score);
+        winnerText.text = "Winner: " + winner + "\nScore: " + score;
+    }
+
+    public void ReturnToMenu()
+    {
+        menuManager.LoadScene("MainMenu");
+    }
+}

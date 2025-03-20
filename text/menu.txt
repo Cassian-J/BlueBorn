@@ -1,0 +1,58 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections.Generic;
+
+public class MainMenu : MonoBehaviour
+{
+    public MenuManager menuManager;
+    public ScoreManager scoreManager;
+    public Text topScoresText;
+
+    public void StartGame()
+    {
+        menuManager.LoadScene("GameScene");
+    }
+
+    public void OpenInstructions()
+    {
+        menuManager.LoadScene("InstructionsScene");
+    }
+
+    public void OpenOptions()
+    {
+        menuManager.LoadScene("OptionsScene");
+    }
+
+    public void ShowTopScores()
+    {
+        List<(string pseudo, int score)> topScores = scoreManager.GetTopScores(10);
+        topScoresText.text = "Top Scores:\n";
+
+        foreach (var score in topScores)
+        {
+            topScoresText.text += score.pseudo + ": " + score.score + "\n";
+        }
+    }
+}
+
+
+public class MainMenu : MonoBehaviour
+{
+    public MenuManager menuManager;
+
+    public void StartGame()
+    {
+        menuManager.LoadScene("GameScene");
+    }
+
+    public void OpenInstructions()
+    {
+        menuManager.LoadScene("InstructionsScene");
+    }
+
+    public void OpenOptions()
+    {
+        menuManager.LoadScene("OptionsScene");
+    }
+}
+
