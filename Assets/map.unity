@@ -5927,6 +5927,18 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &199416766 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4607203207309171819, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1845274529}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &199416767 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 5233454710080512307, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1845274529}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &206324329
 GameObject:
   m_ObjectHideFlags: 0
@@ -5972,6 +5984,62 @@ Transform:
   - {fileID: 189642025}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &316677602 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1704120261787319760, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1845274529}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &316677606 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3158722427301200599, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1845274529}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &316677609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316677602}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025513a5dd7d2a948ac8896283b2cef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 1
+  _hammer: {fileID: 199416766}
+  _bulletPrefab: {fileID: 3130556714617523213, guid: 7ca671377f7d9094c807037b2ab6b230,
+    type: 3}
+  animator: {fileID: 316677606}
+  hammerCollider: {fileID: 750487387}
+  health: 100
+  attack: 10
+  speed: 2
+  rotationSpeed: 100
+  fireRate: 5
+  projectileSpeed: 10
+  controls:
+    moveUp: 0
+    moveDown: 0
+    moveLeft: 0
+    moveRight: 0
+    fireNormal: 0
+    fireSpecial: 0
+  nextFireTime: 1
+  firePoint: {fileID: 1264717996}
+  playerID: 1
+  _hammer: {fileID: 0}
+  _bulletPrefab: {fileID: 0}
+  animator: {fileID: 0}
+  firePoint: {fileID: 0}
+  health: 100
+  attack: 10
+  speed: 2
+  rotationSpeed: 100
+  fireRate: 5
+  projectileSpeed: 10
 --- !u!1 &322383159
 GameObject:
   m_ObjectHideFlags: 0
@@ -6371,6 +6439,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &750487386 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4607203207309171819, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 2032288958}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &750487387 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 5233454710080512307, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 2032288958}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1097305773
 GameObject:
   m_ObjectHideFlags: 0
@@ -6496,6 +6576,62 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!1 &1123035072 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1704120261787319760, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 2032288958}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1123035076 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3158722427301200599, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 2032288958}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1123035079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123035072}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 025513a5dd7d2a948ac8896283b2cef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 1
+  _hammer: {fileID: 750487386}
+  _bulletPrefab: {fileID: 3130556714617523213, guid: 7ca671377f7d9094c807037b2ab6b230,
+    type: 3}
+  animator: {fileID: 1123035076}
+  hammerCollider: {fileID: 199416767}
+  health: 100
+  attack: 10
+  speed: 2
+  rotationSpeed: 100
+  fireRate: 5
+  projectileSpeed: 10
+  controls:
+    moveUp: 0
+    moveDown: 0
+    moveLeft: 0
+    moveRight: 0
+    fireNormal: 0
+    fireSpecial: 0
+  nextFireTime: 1
+  firePoint: {fileID: 1271655918}
+  playerID: 1
+  _hammer: {fileID: 0}
+  _bulletPrefab: {fileID: 0}
+  animator: {fileID: 0}
+  firePoint: {fileID: 0}
+  health: 100
+  attack: 10
+  speed: 2
+  rotationSpeed: 100
+  fireRate: 5
+  projectileSpeed: 10
 --- !u!1 &1189914497
 GameObject:
   m_ObjectHideFlags: 0
@@ -6541,6 +6677,18 @@ Transform:
   - {fileID: 44472479}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1264717996 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9045655125035915036, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 2032288958}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1271655918 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9045655125035915036, guid: 4fa8928d3f86375408ccabcf5e673aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 1845274529}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1282359307
 GameObject:
   m_ObjectHideFlags: 0
@@ -6677,7 +6825,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1704120261787319760, guid: 4fa8928d3f86375408ccabcf5e673aea,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 316677609}
   m_SourcePrefab: {fileID: 100100000, guid: 4fa8928d3f86375408ccabcf5e673aea, type: 3}
 --- !u!1001 &2032288958
 PrefabInstance:
@@ -6765,7 +6917,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1704120261787319760, guid: 4fa8928d3f86375408ccabcf5e673aea,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1123035079}
   m_SourcePrefab: {fileID: 100100000, guid: 4fa8928d3f86375408ccabcf5e673aea, type: 3}
 --- !u!1 &2132143503
 GameObject:
