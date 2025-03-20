@@ -7,27 +7,42 @@ public class Player : MonoBehaviour
 {
     [Header("Player Settings")]
     public int playerID = 1; // 1 ou 2 pour différencier les joueurs
-
-    public Animator animator;
+    public GameObject _hammer;
+    public GameObject _bulletPrefab;
+    public Animator animator;   
+    public Collider2D hammerCollider;
     [Header("Stats")]
     public float health = 100;
     public float attack = 10;
-    public float speed = 1;
+    public float speed = 2;
     public float rotationSpeed = 100;
     public float fireRate = 5;
     public float projectileSpeed = 10;
-    [SerializeField]
-    private GameObject _bulletPrefab;
-    [SerializeField]
-    private float _bulletSpeed;
+    
+    
     [Header("Controls")]
     public PlayerControls controls;
     private float nextFireTime = 0f;
     public Transform firePoint;
+    
+
 
     private void Start()
     {
         LoadControls();
+
+        if (_hammer != null)
+        {
+            hammerCollider = _hammer.GetComponent<Collider2D>();
+            if (hammerCollider == null)
+            {
+                Debug.LogError("Aucun Collider2D trouvé sur le marteau !");
+            }
+            else
+            {
+                hammerCollider.enabled = false;
+            }
+        }
     }
 
     private void Update()
@@ -113,10 +128,9 @@ public class Player : MonoBehaviour
 
     if (Input.GetKey(controls.fireNormal) && Time.time >= nextFireTime && moveDirection != Vector3.zero)
     {
-        animator.SetBool("isShooting", true);
         Shoot(moveDirection);
         
-        nextFireTime = Time.time + 1f / fireRate;
+        nextFireTime = Time.time + 1 / fireRate;
     }
     else if (Input.GetKeyUp(controls.fireNormal))
     {
@@ -126,7 +140,7 @@ public class Player : MonoBehaviour
     if (Input.GetKeyDown(controls.fireSpecial))
     {
         MeleeAttack();
-        animator.SetBool("isAttacking", true);
+        
     }else if (Input.GetKeyUp(controls.fireSpecial))
     {
         animator.SetBool("isAttacking", false);
@@ -136,7 +150,8 @@ public class Player : MonoBehaviour
 }
 
     private void Shoot(Vector3 vector)
-    {
+    {   
+        animator.SetBool("isShooting", true);
         Debug.Log("player " + playerID + " Attack triggered!");
         GameObject bullet = Instantiate(_bulletPrefab, firePoint.position, transform.rotation);
         Bullet bulletScript = bullet.GetComponent<Bullet>();
@@ -149,11 +164,14 @@ public class Player : MonoBehaviour
         
     }
 
-
     private void MeleeAttack()
     {
+        animator.SetBool("isAttacking", true);
         Debug.Log("player "+playerID +" Special attack triggered!");
-    }
+        
+        }
+        
+    
     public void TakeDamage(float damage)
     {
         health -= damage;
