@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 1743138129}
   - component: {fileID: 1743138128}
   - component: {fileID: 1743138127}
-  - component: {fileID: 1743138126}
+  - component: {fileID: 1743138132}
   m_Layer: 0
   m_Name: player2
   m_TagString: Player
@@ -492,37 +492,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!114 &1743138126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743138125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abbd466d9c9c47d4c99356e63a37b942, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerID: 2
-  _hammer: {fileID: 0}
-  _bulletPrefab: {fileID: 5107189161283003253, guid: 7ca671377f7d9094c807037b2ab6b230, type: 3}
-  animator: {fileID: 1743138129}
-  hammerCollider: {fileID: 989691637}
-  health: 100
-  attack: 10
-  speed: 2
-  rotationSpeed: 100
-  fireRate: 5
-  projectileSpeed: 10
-  controls:
-    moveUp: 0
-    moveDown: 0
-    moveLeft: 0
-    moveRight: 0
-    fireNormal: 0
-    fireSpecial: 0
-  firePoint: {fileID: 1351492803}
 --- !u!61 &1743138127
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -691,6 +660,37 @@ Transform:
   - {fileID: 1822929062}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1743138132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1743138125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abbd466d9c9c47d4c99356e63a37b942, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerID: 2
+  _hammer: {fileID: 989691634}
+  _bulletPrefab: {fileID: 5107189161283003253, guid: 7ca671377f7d9094c807037b2ab6b230, type: 3}
+  animator: {fileID: 1743138129}
+  hammerCollider: {fileID: 989691637}
+  health: 100
+  attack: 10
+  speed: 2
+  rotationSpeed: 100
+  fireRate: 5
+  projectileSpeed: 10
+  controls:
+    moveUp: 0
+    moveDown: 0
+    moveLeft: 0
+    moveRight: 0
+    fireNormal: 0
+    fireSpecial: 0
+  firePoint: {fileID: 1351492803}
 --- !u!1 &1822929061
 GameObject:
   m_ObjectHideFlags: 0

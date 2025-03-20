@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     
     [Header("Controls")]
     public PlayerControls controls;
-    private float nextFireTime = 0f;
+    private float nextFireTime = 1f;
     public Transform firePoint;
     
 
@@ -80,12 +80,12 @@ public class Player : MonoBehaviour
         }
         else if (playerID == 2)
         {
-            controls.moveUp = KeyCode.W;
+            controls.moveUp = KeyCode.Z;
             controls.moveDown = KeyCode.S;
-            controls.moveLeft = KeyCode.A;
+            controls.moveLeft = KeyCode.Q;
             controls.moveRight = KeyCode.D;
             controls.fireNormal = KeyCode.E;
-            controls.fireSpecial = KeyCode.Q;
+            controls.fireSpecial = KeyCode.A;
         }
     }
 
